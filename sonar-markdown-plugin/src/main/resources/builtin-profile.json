@@ -1,0 +1,6 @@
+{
+  "name": "Markdown Built-in Profile",
+  "ruleKeys": [
+    "NoWhitespaceAtEOL"
+  ]
+}

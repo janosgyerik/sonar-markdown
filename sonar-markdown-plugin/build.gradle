@@ -1,0 +1,90 @@
+plugins {
+    id 'java'
+    id 'jacoco'
+    id 'com.github.johnrengelman.shadow' version '2.0.2'
+}
+
+compileJava {
+    sourceCompatibility = 1.8
+    targetCompatibility = 1.8
+    options.encoding = "UTF-8"
+}
+
+compileTestJava.options.encoding = "UTF-8"
+
+dependencies {
+    compileOnly 'com.google.code.findbugs:jsr305'
+    compile     'org.sonarsource.sonarqube:sonar-plugin-api'
+    compile     'org.sonarsource.analyzer-commons:sonar-analyzer-commons'
+
+    testCompile 'org.junit.jupiter:junit-jupiter-api'
+    testRuntime 'org.junit.jupiter:junit-jupiter-engine'
+    testCompile 'org.junit.jupiter:junit-jupiter-params:5.2.0'
+    testCompile 'org.mockito:mockito-core'
+    testCompile 'org.assertj:assertj-core'
+}
+
+jar {
+    manifest {
+        def displayVersion = (project.buildNumber == null ? version : version.substring(0, version.lastIndexOf('.')) + " (build ${project.buildNumber})")
+        def buildDate = new Date().format("yyyy-MM-dd'T'HH:mm:ssZ")
+        attributes(
+                'Build-Time': buildDate,
+                'Implementation-Build': 'git rev-parse HEAD'.execute().text.trim(),
+                'Plugin-BuildDate': buildDate,
+                'Plugin-ChildFirstClassLoader': 'false',
+                'Plugin-Class': 'com.janosgyerik.sonar.markdown.plugin.MarkdownPlugin',
+                'Plugin-Description': 'Analyzer for Markdown',
+                'Plugin-Developers': 'Janos Gyerik',
+                'Plugin-Display-Version': displayVersion,
+                'Plugin-Homepage': 'http://janosgyerik.com/sonar/plugins/markdown.html',
+                'Plugin-IssueTrackerUrl': 'https://github.com/janosgyerik/sonar-markdown/issues',
+                'Plugin-Key': 'markdown',
+                'Plugin-License': 'MIT',
+                'Plugin-Name': 'SonarMarkdown',
+                'Plugin-Organization': 'janosgyerik',
+                'Plugin-OrganizationUrl': 'http://janosgyerik.com',
+                'Plugin-SourcesUrl': 'https://github.com/janosgyerik/sonar-markdown',
+                'Plugin-Version': version,
+                'Sonar-Version': '6.7',
+                'SonarLint-Supported': 'false',
+                'Version': "${version}",
+        )
+    }
+}
+
+task sourcesJar(type: Jar, dependsOn: classes) {
+    classifier = 'sources'
+    from sourceSets.main.allSource
+}
+
+task javadocJar(type: Jar, dependsOn: javadoc) {
+    classifier = 'javadoc'
+    from javadoc.destinationDir
+}
+
+shadowJar {
+    exclude 'META-INF/**/*'
+    dependencies {
+        exclude(dependency('org.sonarsource.sonarqube:sonar-plugin-api'))
+        exclude(dependency('org.codehaus.woodstox:.*'))
+        exclude(dependency('org.codehaus.staxmate:.*'))
+        exclude(dependency('com.google.code.findbugs:jsr305'))
+    }
+}
+
+artifacts {
+    archives shadowJar
+}
+
+publishing {
+    publications {
+        mavenJava(MavenPublication) {
+            artifact source: shadowJar, classifier: null
+            if (release) {
+                artifact sourcesJar
+                artifact javadocJar
+            }
+        }
+    }
+}
