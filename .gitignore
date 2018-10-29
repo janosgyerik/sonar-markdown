@@ -21,5 +21,8 @@ gradle-app.setting
 build
 out
 
+# Maven
+target
+
 # Sonar
 .scannerwork

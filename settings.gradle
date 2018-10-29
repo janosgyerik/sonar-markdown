@@ -9,4 +9,4 @@ rootProject.name = 'sonar-markdown'
 include 'sonar-markdown-plugin'
 
 //include 'its:ruling'
-//include 'its:plugin:tests'
+include 'its:plugin:tests'
