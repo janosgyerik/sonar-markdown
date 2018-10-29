@@ -34,15 +34,20 @@ import org.sonar.check.Rule;
 
 @Rule(
   key = NoWhitespaceAtEOL.RULE_KEY,
-  name = NoWhitespaceAtEOL.MESSAGE,
-  description = NoWhitespaceAtEOL.MESSAGE
+  name = NoWhitespaceAtEOL.NAME,
+  description = NoWhitespaceAtEOL.DESCRIPTION,
+  tags = {"sloppy", "portability"}
 )
 public class NoWhitespaceAtEOL implements Check {
 
   static final String RULE_KEY = "NoWhitespaceAtEOL";
   static final RuleKey API_RULE_KEY = RuleKey.of(MarkdownRulesDefinition.REPOSITORY_KEY, RULE_KEY);
 
-  static final String MESSAGE = "There should be no trailing whitespace at the end of lines";
+  static final String NAME = "There should be no trailing whitespace at the end of lines";
+  static final String DESCRIPTION = "Whitespace at the end of lines is practically invisible,\n" +
+    "but in some implementations it may have a meaning,\n" +
+    "leading to differently rendered output.\n" +
+    "To avoid confusion, and to get consistent results, it's best to avoid it.";
 
   private EngineContext engineContext;
 
@@ -59,7 +64,7 @@ public class NoWhitespaceAtEOL implements Check {
       if (line.endsWith(" ") || line.endsWith("\t")) {
         Issue issue = Issue.newBuilder()
           .ruleKey(API_RULE_KEY)
-          .message(MESSAGE)
+          .message(NAME)
           .line(lineNum)
           .column(line.replaceAll("\\s+$", "").length())
           .endColumn(line.length())

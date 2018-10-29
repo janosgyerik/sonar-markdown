@@ -40,12 +40,8 @@ public class MarkdownIntegrationTest {
   @ClassRule
   public static Orchestrator orchestrator = Tests.ORCHESTRATOR;
 
-  private static final String PIVOT_SOURCE_FILE = "project:pivot.markdown";
-
   @BeforeClass
-  public static void startServer() {
-    orchestrator.resetData();
-
+  public static void prepareSampleAnalyzedProject() {
     SonarScanner build = SonarScanner.create()
       .setProjectKey(PROJECT_KEY)
       .setProjectName("Samples")

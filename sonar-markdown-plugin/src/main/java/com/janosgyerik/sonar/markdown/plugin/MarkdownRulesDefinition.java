@@ -33,7 +33,8 @@ public class MarkdownRulesDefinition implements RulesDefinition {
   
   @Override
   public void define(Context context) {
-    NewRepository repository = context.createRepository(REPOSITORY_KEY, MarkdownLanguage.KEY)
+    NewRepository repository = context
+      .createRepository(REPOSITORY_KEY, MarkdownLanguage.KEY)
       .setName("SonarAnalyzer");
 
     MarkdownChecks.getChecks().forEach(check -> {
