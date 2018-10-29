@@ -23,8 +23,17 @@
  */
 package com.janosgyerik.sonar.markdown.plugin.utils;
 
+import java.io.File;
+import java.io.IOException;
 import java.io.InputStream;
+import java.net.URI;
+import java.nio.charset.Charset;
+import java.nio.file.Path;
 import java.util.Scanner;
+import javax.annotation.CheckForNull;
+import org.sonar.api.batch.fs.InputFile;
+import org.sonar.api.batch.fs.TextPointer;
+import org.sonar.api.batch.fs.TextRange;
 
 public class TestUtils {
 
@@ -40,5 +49,110 @@ public class TestUtils {
     }
     Scanner scanner = new java.util.Scanner(resourceAsStream).useDelimiter("\\A");
     return scanner.hasNext() ? scanner.next() : "";
+  }
+
+  public static InputFile newInputFile(String content) {
+    return new InputFile() {
+      @Override
+      public String relativePath() {
+        throw new UnsupportedOperationException();
+      }
+
+      @Override
+      public String absolutePath() {
+        throw new UnsupportedOperationException();
+      }
+
+      @Override
+      public File file() {
+        throw new UnsupportedOperationException();
+      }
+
+      @Override
+      public Path path() {
+        throw new UnsupportedOperationException();
+      }
+
+      @CheckForNull
+      @Override
+      public String language() {
+        throw new UnsupportedOperationException();
+      }
+
+      @Override
+      public Type type() {
+        throw new UnsupportedOperationException();
+      }
+
+      @Override
+      public InputStream inputStream() throws IOException {
+        throw new UnsupportedOperationException();
+      }
+
+      @Override
+      public String contents() throws IOException {
+        return content;
+      }
+
+      @Override
+      public Status status() {
+        throw new UnsupportedOperationException();
+      }
+
+      @Override
+      public int lines() {
+        throw new UnsupportedOperationException();
+      }
+
+      @Override
+      public boolean isEmpty() {
+        throw new UnsupportedOperationException();
+      }
+
+      @Override
+      public TextPointer newPointer(int line, int lineOffset) {
+        throw new UnsupportedOperationException();
+      }
+
+      @Override
+      public TextRange newRange(TextPointer start, TextPointer end) {
+        throw new UnsupportedOperationException();
+      }
+
+      @Override
+      public TextRange newRange(int startLine, int startLineOffset, int endLine, int endLineOffset) {
+        throw new UnsupportedOperationException();
+      }
+
+      @Override
+      public TextRange selectLine(int line) {
+        throw new UnsupportedOperationException();
+      }
+
+      @Override
+      public Charset charset() {
+        throw new UnsupportedOperationException();
+      }
+
+      @Override
+      public URI uri() {
+        throw new UnsupportedOperationException();
+      }
+
+      @Override
+      public String filename() {
+        throw new UnsupportedOperationException();
+      }
+
+      @Override
+      public String key() {
+        throw new UnsupportedOperationException();
+      }
+
+      @Override
+      public boolean isFile() {
+        throw new UnsupportedOperationException();
+      }
+    };
   }
 }

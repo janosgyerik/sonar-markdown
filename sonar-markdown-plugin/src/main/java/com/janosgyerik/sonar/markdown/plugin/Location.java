@@ -23,6 +23,7 @@
  */
 package com.janosgyerik.sonar.markdown.plugin;
 
+import java.util.Objects;
 import javax.annotation.Nullable;
 
 public class Location {
@@ -42,6 +43,29 @@ public class Location {
 
   public boolean hasRange() {
     return hasRange;
+  }
+
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) {
+      return true;
+    }
+    if (o == null || getClass() != o.getClass()) {
+      return false;
+    }
+    Location location = (Location) o;
+    return line == location.line && endLine == location.endLine && hasRange == location.hasRange && Objects.equals(
+      column, location.column) && Objects.equals(endColumn, location.endColumn);
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hash(line, endLine, column, endColumn);
+  }
+
+  @Override
+  public String toString() {
+    return "Location{" + "line=" + line + ", endLine=" + endLine + ", column=" + column + ", endColumn=" + endColumn + '}';
   }
 
   public static Builder newBuilder() {
