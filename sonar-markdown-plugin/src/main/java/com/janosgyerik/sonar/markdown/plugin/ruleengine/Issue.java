@@ -24,20 +24,23 @@
 package com.janosgyerik.sonar.markdown.plugin.ruleengine;
 
 import com.janosgyerik.sonar.markdown.plugin.Location;
-import org.sonar.api.rule.RuleKey;
+import org.sonar.check.Rule;
+
+import static com.janosgyerik.sonar.markdown.plugin.Utils.getRule;
 
 public class Issue {
-  private final RuleKey ruleKey;
+  private final String ruleKey;
   private final String message;
   private final Location location;
 
   private Issue(Builder builder) {
-    this.ruleKey = builder.ruleKey;
-    this.message = builder.message;
+    Rule rule = getRule(builder.check.getClass());
+    this.ruleKey = rule.key();
+    this.message = rule.name();
     this.location = builder.location;
   }
 
-  public RuleKey ruleKey() {
+  public String ruleKey() {
     return ruleKey;
   }
 
@@ -53,16 +56,19 @@ public class Issue {
     return location.hasRange();
   }
 
-  public static Builder newBuilder() {
-    return new Builder();
+  public static Builder newBuilder(Check check) {
+    return new Builder(check);
   }
 
   public static class Builder {
-    private RuleKey ruleKey;
-    private String message;
+    private final Check check;
     private Location location;
 
     private Location.Builder locationBuilder = Location.newBuilder();
+
+    private Builder(Check check) {
+      this.check = check;
+    }
 
     public Issue build() {
       validate();
@@ -85,16 +91,6 @@ public class Issue {
 
     public Builder endColumn(int endColumn) {
       locationBuilder.endColumn(endColumn);
-      return this;
-    }
-
-    public Builder message(String message) {
-      this.message = message;
-      return this;
-    }
-
-    public Builder ruleKey(RuleKey ruleKey) {
-      this.ruleKey = ruleKey;
       return this;
     }
   }

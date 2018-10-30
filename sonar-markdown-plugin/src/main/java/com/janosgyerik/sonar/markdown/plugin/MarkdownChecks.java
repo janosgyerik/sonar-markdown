@@ -23,6 +23,7 @@
  */
 package com.janosgyerik.sonar.markdown.plugin;
 
+import com.janosgyerik.sonar.markdown.plugin.ruleengine.Check;
 import com.janosgyerik.sonar.markdown.plugin.ruleengine.checks.NoWhitespaceAtEOL;
 import java.util.Arrays;
 import java.util.List;
@@ -33,7 +34,7 @@ public class MarkdownChecks {
     // do not instantiate
   }
 
-  public static List<Class> getChecks() {
+  public static List<Class<? extends Check>> getChecks() {
     return Arrays.asList(
       NoWhitespaceAtEOL.class
     );

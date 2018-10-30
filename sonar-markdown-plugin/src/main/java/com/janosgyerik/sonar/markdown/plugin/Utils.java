@@ -23,22 +23,11 @@
  */
 package com.janosgyerik.sonar.markdown.plugin;
 
-import org.sonar.api.server.profile.BuiltInQualityProfilesDefinition;
+import com.janosgyerik.sonar.markdown.plugin.ruleengine.Check;
 import org.sonar.check.Rule;
 
-import static com.janosgyerik.sonar.markdown.plugin.Utils.getRule;
-
-public class BuiltInProfile implements BuiltInQualityProfilesDefinition {
-
-  @Override
-  public void define(Context context) {
-    NewBuiltInQualityProfile profile = context.createBuiltInQualityProfile("Markdown Built-in Profile", MarkdownLanguage.KEY);
-    MarkdownChecks.getChecks().forEach(check -> {
-      Rule rule = getRule(check);
-      profile.activateRule(MarkdownRulesDefinition.REPOSITORY_KEY, rule.key());
-    });
-    profile.setDefault(true);
-    profile.done();
+public class Utils {
+  public static Rule getRule(Class<? extends Check> check) {
+    return check.getAnnotation(Rule.class);
   }
 }
-

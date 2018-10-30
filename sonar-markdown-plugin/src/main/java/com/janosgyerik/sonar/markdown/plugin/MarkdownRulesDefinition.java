@@ -27,9 +27,11 @@ import org.sonar.api.batch.rule.Severity;
 import org.sonar.api.rules.RuleType;
 import org.sonar.api.server.rule.RulesDefinition;
 
+import static com.janosgyerik.sonar.markdown.plugin.Utils.getRule;
+
 public class MarkdownRulesDefinition implements RulesDefinition {
 
-  public static final String REPOSITORY_KEY = "markdown";
+  static final String REPOSITORY_KEY = "markdown";
   
   @Override
   public void define(Context context) {
@@ -38,7 +40,7 @@ public class MarkdownRulesDefinition implements RulesDefinition {
       .setName("SonarAnalyzer");
 
     MarkdownChecks.getChecks().forEach(check -> {
-      org.sonar.check.Rule rule = (org.sonar.check.Rule) check.getAnnotation(org.sonar.check.Rule.class);
+      org.sonar.check.Rule rule = getRule(check);
 
       repository.createRule(rule.key())
         .setName(rule.name())

@@ -24,12 +24,10 @@
 package com.janosgyerik.sonar.markdown.plugin.utils;
 
 import java.io.File;
-import java.io.IOException;
 import java.io.InputStream;
 import java.net.URI;
 import java.nio.charset.Charset;
 import java.nio.file.Path;
-import java.util.Scanner;
 import javax.annotation.CheckForNull;
 import org.sonar.api.batch.fs.InputFile;
 import org.sonar.api.batch.fs.TextPointer;
@@ -39,16 +37,6 @@ public class TestUtils {
 
   private TestUtils() {
     // utility class, forbidden constructor
-  }
-
-  public static String readTestResource(Class<?> clazz, String filename) {
-    String resource = clazz.getSimpleName() + "/" + filename;
-    InputStream resourceAsStream = clazz.getResourceAsStream(resource);
-    if (resourceAsStream == null) {
-      throw new IllegalStateException("Resource " + resource + " not found on classpath.");
-    }
-    Scanner scanner = new java.util.Scanner(resourceAsStream).useDelimiter("\\A");
-    return scanner.hasNext() ? scanner.next() : "";
   }
 
   public static InputFile newInputFile(String content) {
@@ -85,12 +73,12 @@ public class TestUtils {
       }
 
       @Override
-      public InputStream inputStream() throws IOException {
+      public InputStream inputStream() {
         throw new UnsupportedOperationException();
       }
 
       @Override
-      public String contents() throws IOException {
+      public String contents() {
         return content;
       }
 

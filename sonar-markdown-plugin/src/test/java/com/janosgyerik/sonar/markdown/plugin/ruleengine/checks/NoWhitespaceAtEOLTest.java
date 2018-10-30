@@ -35,8 +35,8 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 
-import static com.janosgyerik.sonar.markdown.plugin.ruleengine.checks.NoWhitespaceAtEOL.API_RULE_KEY;
 import static com.janosgyerik.sonar.markdown.plugin.ruleengine.checks.NoWhitespaceAtEOL.NAME;
+import static com.janosgyerik.sonar.markdown.plugin.ruleengine.checks.NoWhitespaceAtEOL.RULE_KEY;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.tuple;
 
@@ -82,7 +82,7 @@ class NoWhitespaceAtEOLTest {
 
     assertThat(engineContext.getIssues())
       .extracting(Issue::ruleKey, Issue::message, Issue::location)
-      .containsExactly(tuple(API_RULE_KEY, NAME, location));
+      .containsExactly(tuple(RULE_KEY, NAME, location));
   }
 
   private static Stream<Arguments> contentsWithExpectedLocations() {

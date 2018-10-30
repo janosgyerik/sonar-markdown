@@ -23,13 +23,11 @@
  */
 package com.janosgyerik.sonar.markdown.plugin.ruleengine.checks;
 
-import com.janosgyerik.sonar.markdown.plugin.MarkdownRulesDefinition;
 import com.janosgyerik.sonar.markdown.plugin.ruleengine.Check;
 import com.janosgyerik.sonar.markdown.plugin.ruleengine.EngineContext;
 import com.janosgyerik.sonar.markdown.plugin.ruleengine.Issue;
 import java.io.IOException;
 import org.sonar.api.batch.fs.InputFile;
-import org.sonar.api.rule.RuleKey;
 import org.sonar.check.Rule;
 
 @Rule(
@@ -41,13 +39,12 @@ import org.sonar.check.Rule;
 public class NoWhitespaceAtEOL implements Check {
 
   static final String RULE_KEY = "NoWhitespaceAtEOL";
-  static final RuleKey API_RULE_KEY = RuleKey.of(MarkdownRulesDefinition.REPOSITORY_KEY, RULE_KEY);
 
   static final String NAME = "There should be no trailing whitespace at the end of lines";
   static final String DESCRIPTION = "Whitespace at the end of lines is practically invisible,\n" +
     "but in some implementations it may have a meaning,\n" +
     "leading to differently rendered output.\n" +
-    "To avoid confusion, and to get consistent results, it's best to avoid it.";
+    "To avoid confusion, and to get consistent results, it's better to avoid it.";
 
   private EngineContext engineContext;
 
@@ -62,9 +59,7 @@ public class NoWhitespaceAtEOL implements Check {
     for (String line : inputFile.contents().split("\n")) {
       lineNum++;
       if (line.endsWith(" ") || line.endsWith("\t")) {
-        Issue issue = Issue.newBuilder()
-          .ruleKey(API_RULE_KEY)
-          .message(NAME)
+        Issue issue = Issue.newBuilder(this)
           .line(lineNum)
           .column(line.replaceAll("\\s+$", "").length())
           .endColumn(line.length())

@@ -36,6 +36,7 @@ import org.sonar.api.batch.sensor.SensorContext;
 import org.sonar.api.batch.sensor.SensorDescriptor;
 import org.sonar.api.batch.sensor.issue.NewIssue;
 import org.sonar.api.batch.sensor.issue.NewIssueLocation;
+import org.sonar.api.rule.RuleKey;
 import org.sonar.api.utils.log.Logger;
 import org.sonar.api.utils.log.Loggers;
 
@@ -82,7 +83,7 @@ public class MarkdownSensor implements Sensor {
     } else {
       location.at(inputFile.selectLine(issue.location().line));
     }
-    newIssue.forRule(issue.ruleKey())
+    newIssue.forRule(RuleKey.of(MarkdownRulesDefinition.REPOSITORY_KEY, issue.ruleKey()))
       .at(location);
 
     newIssue.save();
@@ -92,11 +93,5 @@ public class MarkdownSensor implements Sensor {
     FileSystem fs = context.fileSystem();
     return fs.inputFiles(fs.predicates()
       .hasLanguage(MarkdownLanguage.KEY));
-  }
-
-  static class MarkdownPluginException extends RuntimeException {
-    public MarkdownPluginException(String message, Throwable cause) {
-      super(message, cause);
-    }
   }
 }

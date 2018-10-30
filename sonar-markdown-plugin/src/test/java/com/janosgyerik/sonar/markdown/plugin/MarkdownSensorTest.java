@@ -103,7 +103,7 @@ class MarkdownSensorTest {
 
   private MarkdownSensor getSensor(String... activeRuleArray) {
     Set<String> activeRuleSet = new HashSet<>(Arrays.asList(activeRuleArray));
-    List<Class> ruleClasses = MarkdownChecks.getChecks();
+    List<Class<? extends Check>> ruleClasses = MarkdownChecks.getChecks();
     List<String> allKeys = ruleClasses.stream().map(ruleClass -> ((org.sonar.check.Rule) ruleClass.getAnnotations()[0]).key()).collect(Collectors.toList());
     ActiveRulesBuilder rulesBuilder = new ActiveRulesBuilder();
     allKeys.forEach(key -> {
