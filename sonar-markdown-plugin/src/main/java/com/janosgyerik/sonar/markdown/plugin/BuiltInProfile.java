@@ -24,15 +24,16 @@
 package com.janosgyerik.sonar.markdown.plugin;
 
 import org.sonar.api.server.profile.BuiltInQualityProfilesDefinition;
-import org.sonarsource.analyzer.commons.BuiltInQualityProfileJsonLoader;
 
 public class BuiltInProfile implements BuiltInQualityProfilesDefinition {
 
   @Override
   public void define(Context context) {
     NewBuiltInQualityProfile profile = context.createBuiltInQualityProfile("Markdown Built-in Profile", MarkdownLanguage.KEY);
-    BuiltInQualityProfileJsonLoader.load(profile, MarkdownRulesDefinition.REPOSITORY_KEY,
-      "builtin-profile.json");
+    MarkdownChecks.getChecks().forEach(check -> {
+      org.sonar.check.Rule rule = (org.sonar.check.Rule) check.getAnnotation(org.sonar.check.Rule.class);
+      profile.activateRule(MarkdownRulesDefinition.REPOSITORY_KEY, rule.key());
+    });
     profile.setDefault(true);
     profile.done();
   }
