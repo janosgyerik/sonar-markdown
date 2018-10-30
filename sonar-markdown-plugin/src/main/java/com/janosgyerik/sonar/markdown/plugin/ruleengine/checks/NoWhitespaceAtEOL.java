@@ -61,11 +61,24 @@ public class NoWhitespaceAtEOL implements Check {
       if (line.endsWith(" ") || line.endsWith("\t")) {
         Issue issue = Issue.newBuilder(this)
           .line(lineNum)
-          .column(line.replaceAll("\\s+$", "").length())
+          .column(1 + lastNonWhitespacePos(line))
           .endColumn(line.length())
           .build();
         engineContext.reportIssue(issue);
       }
     }
+  }
+
+  private int lastNonWhitespacePos(String s) {
+    for (int i = s.length() - 1; i >= 0; i--) {
+      switch (s.charAt(i)) {
+        case ' ':
+        case '\t':
+          break;
+        default:
+          return i + 1;
+      }
+    }
+    return 0;
   }
 }

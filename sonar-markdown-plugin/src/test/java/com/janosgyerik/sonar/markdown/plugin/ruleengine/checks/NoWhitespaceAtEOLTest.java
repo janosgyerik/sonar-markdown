@@ -87,12 +87,12 @@ class NoWhitespaceAtEOLTest {
 
   private static Stream<Arguments> contentsWithExpectedLocations() {
     return Stream.of(
-      Arguments.of("foo ", 1, 1, 3, 4),
-      Arguments.of("foo   ", 1, 1, 3, 6),
-      Arguments.of("foo\t", 1, 1, 3, 4),
-      Arguments.of("foo\t\t\t", 1, 1, 3, 6),
-      Arguments.of("foo \t \t", 1, 1, 3, 7),
-      Arguments.of("foo\t \t ", 1, 1, 3, 7)
+      Arguments.of("foo ", 1, 1, 4, 4),
+      Arguments.of("foo   ", 1, 1, 4, 6),
+      Arguments.of("foo\t", 1, 1, 4, 4),
+      Arguments.of("foo\t\t\t", 1, 1, 4, 6),
+      Arguments.of("foo \t \t", 1, 1, 4, 7),
+      Arguments.of("foo\t \t ", 1, 1, 4, 7)
     );
   }
 

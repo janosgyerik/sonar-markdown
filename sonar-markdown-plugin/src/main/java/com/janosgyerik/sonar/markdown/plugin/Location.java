@@ -118,7 +118,7 @@ public class Location {
       }
 
       if (column != null && endColumn != null) {
-        return 0 <= column && column < endColumn;
+        return 0 <= column && column <= endColumn;
       }
 
       return column == null && endColumn == null;
