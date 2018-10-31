@@ -23,10 +23,14 @@
  */
 package com.janosgyerik.sonar.markdown.plugin;
 
+import com.janosgyerik.sonar.markdown.plugin.ruleengine.Check;
+import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 import org.junit.jupiter.api.Test;
 import org.sonar.api.server.profile.BuiltInQualityProfilesDefinition;
 
+import static com.janosgyerik.sonar.markdown.plugin.Utils.getRule;
 import static org.assertj.core.api.Assertions.assertThat;
 
 class BuiltInProfileTest {
@@ -34,12 +38,14 @@ class BuiltInProfileTest {
   private final BuiltInQualityProfilesDefinition underTest = new BuiltInProfile();
 
   @Test
-  void builtin_profile_has_same_number_of_rules_as_number_of_checks() {
+  void builtin_profile_rules_corresponding_to_checks() {
     BuiltInQualityProfilesDefinition.Context context = new BuiltInQualityProfilesDefinition.Context();
     underTest.define(context);
 
     Map<String, Map<String, BuiltInQualityProfilesDefinition.BuiltInQualityProfile>> profilesByLanguageAndName = context.profilesByLanguageAndName();
     assertThat(profilesByLanguageAndName).hasSize(1);
+
+    List<Class<? extends Check>> checks = MarkdownChecks.all();
 
     BuiltInQualityProfilesDefinition.BuiltInQualityProfile firstBuiltInQualityProfile = profilesByLanguageAndName.values()
       .iterator()
@@ -47,6 +53,14 @@ class BuiltInProfileTest {
       .values()
       .iterator()
       .next();
-    assertThat(firstBuiltInQualityProfile.rules()).hasSize(MarkdownChecks.all().size());
+    assertThat(firstBuiltInQualityProfile.rules()).hasSize(checks.size());
+
+    assertThat(firstBuiltInQualityProfile.rules())
+      .extracting(BuiltInQualityProfilesDefinition.BuiltInActiveRule::repoKey)
+      .containsOnly(MarkdownRulesDefinition.REPOSITORY_KEY);
+
+    assertThat(firstBuiltInQualityProfile.rules())
+      .extracting(BuiltInQualityProfilesDefinition.BuiltInActiveRule::ruleKey)
+      .containsExactlyElementsOf(checks.stream().map(check -> getRule(check).key()).collect(Collectors.toList()));
   }
 }
