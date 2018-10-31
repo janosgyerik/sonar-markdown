@@ -41,9 +41,12 @@ class BuiltInProfileTest {
     Map<String, Map<String, BuiltInQualityProfilesDefinition.BuiltInQualityProfile>> profilesByLanguageAndName = context.profilesByLanguageAndName();
     assertThat(profilesByLanguageAndName).hasSize(1);
 
-    Map<String, BuiltInQualityProfilesDefinition.BuiltInQualityProfile> firstBuiltInQualityProfile = profilesByLanguageAndName.values()
+    BuiltInQualityProfilesDefinition.BuiltInQualityProfile firstBuiltInQualityProfile = profilesByLanguageAndName.values()
+      .iterator()
+      .next()
+      .values()
       .iterator()
       .next();
-    assertThat(firstBuiltInQualityProfile).hasSize(MarkdownChecks.all().size());
+    assertThat(firstBuiltInQualityProfile.rules()).hasSize(MarkdownChecks.all().size());
   }
 }
