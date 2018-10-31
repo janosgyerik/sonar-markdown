@@ -44,6 +44,6 @@ class BuiltInProfileTest {
     Map<String, BuiltInQualityProfilesDefinition.BuiltInQualityProfile> firstBuiltInQualityProfile = profilesByLanguageAndName.values()
       .iterator()
       .next();
-    assertThat(firstBuiltInQualityProfile).hasSize(MarkdownChecks.getChecks().size());
+    assertThat(firstBuiltInQualityProfile).hasSize(MarkdownChecks.all().size());
   }
 }

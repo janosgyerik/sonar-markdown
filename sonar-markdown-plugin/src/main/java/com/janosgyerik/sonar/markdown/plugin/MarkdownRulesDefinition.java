@@ -39,7 +39,7 @@ public class MarkdownRulesDefinition implements RulesDefinition {
       .createRepository(REPOSITORY_KEY, MarkdownLanguage.KEY)
       .setName("SonarAnalyzer");
 
-    MarkdownChecks.getChecks().forEach(check -> {
+    MarkdownChecks.all().forEach(check -> {
       org.sonar.check.Rule rule = getRule(check);
 
       repository.createRule(rule.key())

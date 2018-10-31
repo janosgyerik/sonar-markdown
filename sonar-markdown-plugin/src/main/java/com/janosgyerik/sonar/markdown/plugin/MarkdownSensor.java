@@ -50,7 +50,7 @@ public class MarkdownSensor implements Sensor {
 
   public MarkdownSensor(CheckFactory checkFactory) {
     checks = checkFactory.<Check>create(MarkdownRulesDefinition.REPOSITORY_KEY).addAnnotatedChecks(
-      (Iterable) MarkdownChecks.getChecks());
+      (Iterable) MarkdownChecks.all());
   }
 
   @Override

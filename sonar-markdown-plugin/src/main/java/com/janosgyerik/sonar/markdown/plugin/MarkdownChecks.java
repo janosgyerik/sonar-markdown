@@ -34,7 +34,7 @@ public class MarkdownChecks {
     // do not instantiate
   }
 
-  public static List<Class<? extends Check>> getChecks() {
+  public static List<Class<? extends Check>> all() {
     return Arrays.asList(
       NoWhitespaceAtEOL.class
     );

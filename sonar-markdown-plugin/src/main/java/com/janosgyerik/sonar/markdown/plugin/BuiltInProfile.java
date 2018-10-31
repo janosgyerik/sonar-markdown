@@ -33,7 +33,7 @@ public class BuiltInProfile implements BuiltInQualityProfilesDefinition {
   @Override
   public void define(Context context) {
     NewBuiltInQualityProfile profile = context.createBuiltInQualityProfile("Markdown Built-in Profile", MarkdownLanguage.KEY);
-    MarkdownChecks.getChecks().forEach(check -> {
+    MarkdownChecks.all().forEach(check -> {
       Rule rule = getRule(check);
       profile.activateRule(MarkdownRulesDefinition.REPOSITORY_KEY, rule.key());
     });

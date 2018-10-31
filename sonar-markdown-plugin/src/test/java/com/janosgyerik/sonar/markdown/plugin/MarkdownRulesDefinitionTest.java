@@ -43,7 +43,7 @@ class MarkdownRulesDefinitionTest {
 
     assertThat(markdownRepository.name()).isEqualTo("SonarAnalyzer");
     assertThat(markdownRepository.language()).isEqualTo("markdown");
-    assertThat(markdownRepository.rules()).hasSize(MarkdownChecks.getChecks().size());
+    assertThat(markdownRepository.rules()).hasSize(MarkdownChecks.all().size());
 
     RulesDefinition.Rule rule = markdownRepository.rule("NoWhitespaceAtEOL");
     assertThat(rule).isNotNull();
